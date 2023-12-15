@@ -1,9 +1,81 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>es.unican.ps</groupId>
-    <artifactId>GestionHotel</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>GestionHotelEAR</artifactId>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>es.unican.ps</groupId>
+		<artifactId>GestionHotel</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>GestionHotelEAR</artifactId>
+
+	<packaging>ear</packaging>
+
+
+	<!-- The dependencies for EAR module should include all these sub-modules 
+		that are needed to be packaged into the ear file like the below... -->
+	<dependencies>
+		<dependency>
+			<groupId>es.unican.ps</groupId>
+			<artifactId>GestionHotelBusiness</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>ejb</type>
+		</dependency>
+		<dependency>
+			<groupId>es.unican.ps</groupId>
+			<artifactId>GestionHotelWeb</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>es.unican.ps</groupId>
+			<artifactId>GestionHotelCommon</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>es.unican.ps</groupId>
+			<artifactId>GestionHotelDAO</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>ejb</type>
+
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>GestionHotel</finalName>
+		<plugins>
+			<!-- The ear plugin must include the definition for "modules", for any 
+				modules that are needed to be included in the EAR file, you need to specify 
+				them one by one, e.g. "ejbModule", "webModule", "jarModule" and "appClientModule". -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<modules>
+						<ejbModule>
+							<groupId>es.unican.ps</groupId>
+							<artifactId>GestionHotelBusiness</artifactId>
+						</ejbModule>
+						<webModule>
+							<groupId>es.unican.ps</groupId>
+							<artifactId>GestionHotelWeb</artifactId>
+						</webModule>
+						<!-- Este módulo es solo una librería, se añade como jarModule de modo 
+							que se añade a la carpeta lib del ear -->
+						<jarModule>
+							<groupId>es.unican.ps</groupId>
+							<artifactId>GestionHotelCommon</artifactId>
+						</jarModule>
+						<ejbModule>
+							<groupId>es.unican.ps</groupId>
+							<artifactId>GestionHotelDAO</artifactId>
+						</ejbModule>
+					</modules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
