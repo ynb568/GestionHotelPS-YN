@@ -1,5 +1,5 @@
 package es.unican.ps.gestionHotel.businessLayer;
-/*
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,75 +15,82 @@ import org.mockito.*;
 import es.unican.ps.gestionHotel.daoLayer.IHotelesDAO;
 import es.unican.ps.gestionHotel.daoLayer.IReservasDAO;
 import es.unican.ps.gestionHotel.domain.Hotel;
-import es.unican.ps.gestionHotel.domain.Reserva;
-import es.unican.ps.gestionHotel.domain.TipoHabitacion;
 
 public class ConsultaReservaTest {
 	@Mock
 	IHotelesDAO mockHoteles;
 	@Mock
 	IReservasDAO mockReservas;
-	
+
 	ConsultaReserva sut;
-	
+
 	@BeforeEach
 	public void inicializa() {
 		MockitoAnnotations.openMocks(this); //Creacion de los mocks definidos
 		sut = new ConsultaReserva(mockHoteles, mockReservas); //Uso de los mocks para la creacion de la clase de prueba		
 	}
-    
-    // Test cases for consultaDisponibilidad(String nomHotel, String localidad)
-    @Test
-    public void UCD_1a_testConsultaDisponibilidadPorNombre() {
-        String nomHotel = "6 Flags Santander";
-        Hotel hotel = new Hotel(nomHotel, null, null, null, null);
-        when(mockHoteles.getHotel(nomHotel)).thenReturn(hotel);
-        
-        ArrayList<Hotel> resultado = sut.consultaDisponibilidad(nomHotel, null);
-        
-        assertEquals(Arrays.asList(hotel), resultado);
-    }
-    
-    @Test
-    public void UCD_1b_testConsultaDisponibilidadPorLocalidad() {
-        String localidad = "Santander";
-        ArrayList<Hotel> hotelesList = new ArrayList<Hotel>();
-        hotelesList.add(new Hotel(null, null, "Santander", null, null)); // Configure properly
-        hotelesList.add(new Hotel(null, null, "Santander", null, null)); // Configure properly
-        when(mockHoteles.getHotelesLocalidad(localidad)).thenReturn(hotelesList);
-        
-        ArrayList<Hotel> resultado = sut.consultaDisponibilidad(null, localidad);
-        
-        assertEquals(hotelesList, resultado);
-    }
-    
-    
-    @Test
-    public void UCD_1c_testConsultaDisponibilidadNombreYLocalidad() {
-        assertThrows(OperacionNoValida.class, () -> sut.consultaDisponibilidad("Milton Santander", "Santander"));
-    }
-    
-    
-    @Test
-    public void UCD1_d_testConsultaDisponibilidadHotelNoExistente() {
-        String nomHotel = "Hotel Manolo";
-        when(mockHoteles.getHotel(nomHotel)).thenReturn(null);
-        
-        ArrayList<Hotel> resultado = sut.consultaDisponibilidad(nomHotel, null);
-        
-        assertNull(resultado);
-    }
-    
-    @Test
-    public void UCD1_e_testConsultaDisponibilidadLocalidadNoExistente() {
-        String localidad = "Budapest";
-        when(mockHoteles.getHotelesLocalidad(localidad)).thenReturn(new ArrayList<Hotel>());
-        
-        ArrayList<Hotel> resultado = sut.consultaDisponibilidad(null, localidad);
-        
-        assertNull(resultado);
-    }
-    
+
+	// Test cases for consultaDisponibilidad(String nomHotel, String localidad)
+	@Test
+	public void UCD_1a_testConsultaDisponibilidadPorNombre() {
+		String nomHotel = "6 Flags Santander";
+		Hotel hotel = new Hotel(nomHotel, null, null, null, null);
+		when(mockHoteles.getHotel(nomHotel)).thenReturn(hotel);
+
+		ArrayList<Hotel> resultado = sut.consultaDisponibilidad(nomHotel, null);
+
+		assertEquals(Arrays.asList(hotel), resultado);
+	}
+ 
+	@Test
+	public void UCD_1b_testConsultaDisponibilidadPorLocalidad() {
+		String localidad = "Santander";
+		ArrayList<Hotel> hotelesList = new ArrayList<Hotel>();
+		
+		Hotel h1 = new Hotel("Hotel 1", null, "Santander", null, null);
+		Hotel h2 = new Hotel("Hotel 2", null, "Santander", null, null);
+		hotelesList.add(h1);
+		hotelesList.add(h2);
+		when(mockHoteles.getHotelesLocalidad(localidad)).thenReturn(hotelesList);
+
+		ArrayList<Hotel> resultado = sut.consultaDisponibilidad(null, localidad);
+
+		assertEquals(hotelesList, resultado);
+	}
+
+
+	@Test
+	public void UCD_1c_testConsultaDisponibilidadNombreYLocalidad() {
+		assertThrows(OperacionNoValida.class, () -> sut.consultaDisponibilidad("Milton Santander", "Santander"));
+	}
+
+
+	@Test
+	public void UCD1_d_testConsultaDisponibilidadHotelNoExistente() {
+		String nomHotel = "Hotel Manolo";
+		when(mockHoteles.getHotel(nomHotel)).thenReturn(null);
+
+		ArrayList<Hotel> resultado = sut.consultaDisponibilidad(nomHotel, null);
+
+		assertNull(resultado);
+	}
+
+	@Test
+	public void UCD1_e_testConsultaDisponibilidadLocalidadNoExistente() {
+		String localidad = "Budapest";
+		when(mockHoteles.getHotelesLocalidad(localidad)).thenReturn(new ArrayList<Hotel>());
+
+		ArrayList<Hotel> resultado = sut.consultaDisponibilidad(null, localidad);
+
+		assertNull(resultado);
+	}
+	
+	@Test
+	public void UCD_1f_testConsultaDisponibilidadNoNombreNoLocalidad() {
+		assertThrows(OperacionNoValida.class, () -> sut.consultaDisponibilidad(null, null));
+	}
+
+	/*
     // Test cases for consultaDisponibilidadHotel(Hotel h, LocalDate fechaIni, LocalDate fechaFin)
     //ELEGIR UNO PARA UGIC2A
     @Test
@@ -95,18 +102,18 @@ public class ConsultaReservaTest {
         ArrayList<TipoHabitacion> habitacionesEsperadas = new ArrayList<>();
         habitacionesEsperadas.add(new TipoHabitacion("Doble", null, 2));
         habitacionesEsperadas.add(new TipoHabitacion("Individual", null, 1));
-        
+
         // Definición de comportamiento esperado del mock
         when(mockHoteles.consultaDisponibilidadHotel(hotel, fechaIni, fechaFin)).thenReturn(habitacionesEsperadas);
-        
+
         // Ejecución del método bajo prueba
         ArrayList<TipoHabitacion> resultado = sut.consultaDisponibilidadHotel(hotel, fechaIni, fechaFin);
-        
+
         // Verificación de que el resultado es el esperado
         assertEquals(habitacionesEsperadas, resultado);
     }
-    
-    
+
+
     //Test cases for consultaDisponibilidadHotel(Hotel h, LocalDate fechaIni, LocalDate fechaFin)
     @Test
     public void UGIC_2a_testConsultaDisponibilidadHotelConReservas2() {
@@ -137,7 +144,7 @@ public class ConsultaReservaTest {
      ArrayList<TipoHabitacion> resultado = sut.consultaDisponibilidadHotel(hotel, fechaIni, fechaFin);
 
      // Assert the returned arrayList's content matches your expectations
-     
+
     }
 
     // Test cases for consultaReserva(int idReserva)
@@ -148,26 +155,26 @@ public class ConsultaReservaTest {
         reserva.setId(2);
         // Assume method setup: reserva.setId(2), etc.
         when(mockReservas.getReserva(2)).thenReturn(reserva);
-        
+
         Reserva result = sut.consultaReserva(2);
-        
+
         // Validate that the reservation returned has the same ID as the one requested
         assertEquals(reserva, result);
     }
-    
+
     @Test
     public void UGIC_3b_testConsultaReservaNoExistente() {
         int reservaId = 12345;
         when(mockReservas.getReserva(reservaId)).thenReturn(null);
-        
+
         Reserva resultado = sut.consultaReserva(reservaId);
-        
+
         assertNull(resultado);
     }
-    
+
     // Test cases for consultaReservas(LocalDate fechaEntrada, LocalDate fechaSalida)
     // UGIC.4a and UGIC.4b should be added here, remembering to return the correct list of reservations or `null`.
-    
+
 
 
 
@@ -196,7 +203,8 @@ public class ConsultaReservaTest {
    // Assert the returned arrayList's content matches your expectations
   }
 
-    
+  */
+
 }
-*/
+
 

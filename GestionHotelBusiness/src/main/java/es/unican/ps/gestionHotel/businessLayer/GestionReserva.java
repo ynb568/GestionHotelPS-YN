@@ -11,17 +11,18 @@ import es.unican.ps.gestionHotel.domain.DatosPago;
 import es.unican.ps.gestionHotel.domain.Hotel;
 import es.unican.ps.gestionHotel.domain.Reserva;
 import es.unican.ps.gestionHotel.domain.ReservaTipoHabitacion;
-import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 
 @Stateless
-public class GestionReserva implements IGestionReserva {
+public class GestionReserva implements IGestionReserva, IGestionReservaLocal, IGestionReservaRemote {
 	
-	@EJB
+	
 	private IReservasDAO reservas;
 	
-	@EJB
+	
 	private IHotelesDAO hoteles;
+	
+	public GestionReserva () { }
 	
 	public GestionReserva (IReservasDAO reservas, IHotelesDAO hoteles) {
 		this.reservas = reservas;
@@ -64,6 +65,10 @@ public class GestionReserva implements IGestionReserva {
 		
 		Reserva r = new Reserva(fechaIni, fechaFin, precioTotal, dc, dp, tipos);
 		reservas.anhadeReserva(r);
+		
+		if (reservas.getReserva(r.getId()) == null) {
+			return -1;
+		}
 		
 		Hotel h = hoteles.getHotel(nombreHotel);
 		h.getReservas().add(r);

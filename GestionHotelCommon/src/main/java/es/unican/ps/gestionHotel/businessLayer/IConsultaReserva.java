@@ -11,7 +11,7 @@ public interface IConsultaReserva {
 	
 	public ArrayList<TipoHabitacion> consultaDisponibilidadHotel(Hotel h, LocalDate fechaIni, LocalDate fechaFin);
 	
-	public Reserva consultaReserva(int idReserva);
+	public Reserva consultaReservaPorId(int idReserva);
 	
 	public ArrayList<Reserva> consultaReservas(LocalDate fechaEntrada, LocalDate fechaSalida);
 

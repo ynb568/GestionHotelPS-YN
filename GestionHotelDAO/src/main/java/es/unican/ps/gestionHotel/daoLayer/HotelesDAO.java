@@ -6,13 +6,13 @@ import es.unican.ps.gestionHotel.domain.Hotel;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceException;
 
 @Stateless
 public class HotelesDAO implements IHotelesDAO {
-	//@PersistenceContext(unitName="hotelesPU");
+	@PersistenceContext(unitName="gestionHotelPU")
 	private EntityManager em;
-
-	private ArrayList<Hotel> hoteles;
 
 	public Hotel getHotel(String nomHotel) {
 		return em.find(Hotel.class, nomHotel);
@@ -33,10 +33,13 @@ public class HotelesDAO implements IHotelesDAO {
 		try {
 			em.persist(h);
 			return true;
-		} catch (EntityExistsException e) {
-			// Ya existe un hotel en la BBDD con el mismo nombre (PK)
-			return false;
-		}	
+	    } catch (EntityExistsException e) {
+	        // Ya existe un hotel en la BBDD con el mismo nombre (PK)
+	    	return false;
+	    } catch (PersistenceException e) {
+	        // Otra excepción de persistencia
+	    	return false;
+	    }
 	}
 
 	public boolean eliminaHotel(Hotel h) {
@@ -47,7 +50,10 @@ public class HotelesDAO implements IHotelesDAO {
 		} catch (EntityExistsException e) {
 			// No existe un hotel en la BBDD con el mismo nombre (PK)
 			return false;
-		}	
+		} catch (PersistenceException e) {
+	        // Otra excepción de persistencia
+	    	return false;
+	    }	
 	}
 
 	public boolean modificaHotel(Hotel nuevo) {
@@ -58,6 +64,9 @@ public class HotelesDAO implements IHotelesDAO {
 		} catch (EntityExistsException e) {
 			// No existe un hotel en la BBDD con el mismo nombre (PK)
 			return false;
-		}	
+		} catch (PersistenceException e) {
+	        // Otra excepción de persistencia
+	    	return false;
+	    }	
 	}
 }

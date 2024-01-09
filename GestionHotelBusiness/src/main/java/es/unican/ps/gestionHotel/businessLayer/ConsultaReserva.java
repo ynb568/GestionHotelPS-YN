@@ -12,15 +12,17 @@ import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 
 @Stateless
-public class ConsultaReserva implements IConsultaReserva {
+public class ConsultaReserva implements IConsultaReserva, IConsultaReservaRemote, IConsultaReservaLocal {
 	@EJB
 	private IHotelesDAO hoteles;
 	@EJB
 	private IReservasDAO reservas;
+	
+	public ConsultaReserva () { }
 
 	public ConsultaReserva (IHotelesDAO hoteles, IReservasDAO reservas) {
 		this.hoteles = hoteles;
-		this.reservas = reservas;
+		this.reservas = reservas;	
 	}
 
 	/*
@@ -39,8 +41,8 @@ public class ConsultaReserva implements IConsultaReserva {
 			}
 
 		} else if (nomHotel == null && localidad != null) {
-			ArrayList<Hotel> hotelesLoc = hoteles.getHotelesLocalidad(localidad);
-			if (hotelesLoc.isEmpty()) {
+			hotelesSelec = hoteles.getHotelesLocalidad(localidad);
+			if (hotelesSelec.isEmpty()) {
 				//No hay hoteles en la localidad
 				return null;
 			}
@@ -72,7 +74,7 @@ public class ConsultaReserva implements IConsultaReserva {
 		return habsDisponibles;
 	}
 
-	public Reserva consultaReserva(int idReserva) {
+	public Reserva consultaReservaPorId(int idReserva) {
 		return reservas.getReserva(idReserva);
 	}
 

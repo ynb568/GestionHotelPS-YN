@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import es.unican.ps.gestionHotel.domain.Hotel;
 import es.unican.ps.gestionHotel.domain.TipoHabitacion;
-import jakarta.ejb.EJB;
-import jakarta.ejb.Stateful;
+import jakarta.ejb.Stateless;
 
-@Stateful
-public class GestionHotel implements IGestionHotel {
-	@EJB
+@Stateless
+public class GestionHotel implements IGestionHotel, IGestionHotelLocal, IGestionHotelRemote {
+	
 	IGestionHotel hoteles;
+	
+	public GestionHotel () { }
 	
 	public GestionHotel (IGestionHotel hoteles) {
 		this.hoteles = hoteles;

@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 @Entity
@@ -27,7 +28,7 @@ public class Reserva {
 	@OneToOne
 	@JoinColumn(name="tarjeta_fk")
 	private DatosPago tarjeta;
-	@OneToOne
+	@OneToMany
 	@JoinColumn(name="reserva_fk")
 	private ArrayList<ReservaTipoHabitacion> tiposHabs;
 	
