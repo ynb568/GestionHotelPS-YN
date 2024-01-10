@@ -19,8 +19,8 @@ public class ReservaTipoHabitacion {
 	@JoinColumn(name="tipoHabitacion_fk")
 	private TipoHabitacion tipo;
 	
-
-
+	public ReservaTipoHabitacion() {}
+	
 	public ReservaTipoHabitacion (int numHabitaciones, TipoHabitacion tipo) {
 		this.numHabitaciones = numHabitaciones;
 		this.tipo = tipo;

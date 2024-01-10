@@ -32,6 +32,8 @@ public class Reserva {
 	@JoinColumn(name="reserva_fk")
 	private ArrayList<ReservaTipoHabitacion> tiposHabs;
 	
+	public Reserva() {}
+	
 	public Reserva (LocalDate fechaEntrada, LocalDate fechaSalida, double importe, DatosCliente cliente, DatosPago tarjeta, ArrayList<ReservaTipoHabitacion> tiposHabs) {
 		this.fechaEntrada = fechaEntrada;
 		this.fechaSalida = fechaSalida;

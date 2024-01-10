@@ -2,6 +2,8 @@ package es.unican.ps.gestionHotel.domain;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -13,8 +15,11 @@ public class DatosPago {
 	private String cvc;
 	private String mesCaducidad;
 	private String anhoCaducidad;
+	@Enumerated(EnumType.STRING)
 	@Embedded
 	private TipoTarjeta tipo;
+	
+	public DatosPago() {}
 	
 	public DatosPago (String numTarjeta, String cvc, String mesCaducidad, String anhoCaducidad, TipoTarjeta tipo) {
 		this.numTarjeta = numTarjeta;

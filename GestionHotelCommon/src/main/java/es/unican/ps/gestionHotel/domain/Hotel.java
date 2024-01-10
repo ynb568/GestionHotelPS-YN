@@ -21,7 +21,8 @@ public class Hotel {
 	@OneToMany
 	@JoinColumn(name="hotel_fk")
 	private ArrayList<Reserva> reservas;
-
+	
+	public Hotel() {}
 
 	public Hotel (String nombre, String direccion, String localidad, ArrayList<TipoHabitacion> habitaciones, ArrayList<Reserva> reservas) {
 		this.nombre = nombre;

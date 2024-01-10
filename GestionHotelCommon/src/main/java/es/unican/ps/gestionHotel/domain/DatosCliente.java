@@ -12,6 +12,7 @@ public class DatosCliente {
 	private String nombre;
 	private String email;
 	
+	public DatosCliente() {}
 	
 	public DatosCliente (String dni, String nombre, String email) {
 		this.dni = dni;

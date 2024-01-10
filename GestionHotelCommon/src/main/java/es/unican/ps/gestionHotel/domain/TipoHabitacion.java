@@ -12,6 +12,8 @@ public class TipoHabitacion {
 	private double precioPorNoche;
 	private boolean disponible;
 	
+	public TipoHabitacion() {}
+	
 	public TipoHabitacion (String tipo, double precioPorNoche, boolean disponible) {
 		this.tipo = tipo;
 		this.precioPorNoche = precioPorNoche;
