@@ -16,7 +16,6 @@ public class HotelesDAO implements IHotelesDAO {
 
 	public Hotel getHotel(String nomHotel) {
 		return em.find(Hotel.class, nomHotel);
-
 	}
 
 	public ArrayList<Hotel> getHoteles() {
@@ -33,40 +32,32 @@ public class HotelesDAO implements IHotelesDAO {
 		try {
 			em.persist(h);
 			return true;
-	    } catch (EntityExistsException e) {
-	        // Ya existe un hotel en la BBDD con el mismo nombre (PK)
-	    	return false;
-	    } catch (PersistenceException e) {
-	        // Otra excepción de persistencia
-	    	return false;
-	    }
+		} catch (EntityExistsException e) {
+			return false;
+		} catch (PersistenceException e) {
+			return false;
+		}	
 	}
 
 	public boolean eliminaHotel(Hotel h) {
-		// Eliminamos el hotel
 		try {
 			em.remove(h);
 			return true;
 		} catch (EntityExistsException e) {
-			// No existe un hotel en la BBDD con el mismo nombre (PK)
 			return false;
 		} catch (PersistenceException e) {
-	        // Otra excepción de persistencia
-	    	return false;
-	    }	
+			return false;
+		}	
 	}
 
 	public boolean modificaHotel(Hotel nuevo) {
-		// Modificamos el hotel
 		try {
 			em.persist(nuevo);
 			return true;
 		} catch (EntityExistsException e) {
-			// No existe un hotel en la BBDD con el mismo nombre (PK)
 			return false;
 		} catch (PersistenceException e) {
-	        // Otra excepción de persistencia
-	    	return false;
-	    }	
+			return false;
+		}	
 	}
 }

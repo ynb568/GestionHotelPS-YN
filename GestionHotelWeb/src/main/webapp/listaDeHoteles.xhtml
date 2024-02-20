@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+	<title>Lista de Hoteles</title>
+</h:head>
+<h:body>
+	<h:form>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="Fecha de Entrada "/>
+            <h:inputText value="#{consultaReservaBean.fechaIni}"/>
+            <h:outputLabel value="Fecha de Salida "/>
+            <h:inputText value="#{consultaReservaBean.fechaFin}"/>
+        </h:panelGrid>
+        <table border="0">
+            <tr>
+                <th>Nombre</th>
+                <th>Direccion</th>
+                <th>Localidad</th>
+            </tr>
+            <ui:repeat var="hotel" value="#{consultaReservaBean.listaHoteles}">
+                <tr>
+                    <td><h:outputLabel value="#{hotel.getNombre()}" /></td>
+                    <td><h:outputLabel value="#{hotel.getDireccion()}" /></td>
+                    <td><h:outputLabel value="#{hotel.getLocalidad()}" /></td>
+                    <td><h:commandButton value="Ver Disponibilidad" action="#{consultaReservaBean.consultaDisponibilidadHotel}"/></td>
+                </tr>
+            </ui:repeat>
+        </table>        
+    </h:form>
+    </h:body>
+</html>

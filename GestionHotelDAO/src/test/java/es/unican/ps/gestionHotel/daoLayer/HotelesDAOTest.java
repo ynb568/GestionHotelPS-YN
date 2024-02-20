@@ -1,11 +1,17 @@
-package es.unican.ps.gestionHotel.daoLayer;
+ package es.unican.ps.gestionHotel.daoLayer;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -13,19 +19,16 @@ import es.unican.ps.gestionHotel.domain.Hotel;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceException;
-/*
+
 public class HotelesDAOTest {
 	@Mock
-	private IHotelesDAO mockHotelesDAO;
-	@Mock
 	private EntityManager em;
-
+	@InjectMocks
 	private HotelesDAO hotelesDAO; // Asegúrate de que esta es la clase correcta.
 
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.openMocks(this);
-		//hotelesDAO = new HotelesDAO(em); // La clase HotelesDAO debe tomar un EntityManager como argumento.
 	}
 
 	@Test
@@ -33,16 +36,14 @@ public class HotelesDAOTest {
 		// Arrange
 		Hotel h1 = new Hotel("Hotel Sardinero", "Paseo Pereda 15", "Santander", null, null);
 
-		// Act
+		// Act		
 		doNothing().when(em).persist(h1);
 		boolean resultado = false;
-		try {
-			resultado = hotelesDAO.anhadeHotel(h1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		resultado = hotelesDAO.anhadeHotel(h1);
+
 
 		// Assert
+		verify(em, times(1)).persist(h1);
 		assertTrue(resultado, "Se esperaba la adición exitosa del hotel");
 	}
 
@@ -59,8 +60,6 @@ public class HotelesDAOTest {
 		} catch (EntityExistsException e) {
 			// Assert dentro del catch
 			assertFalse(resultado, "Se esperaba que la adición del hotel fallara debido a la existencia previa");
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -77,9 +76,7 @@ public class HotelesDAOTest {
 		} catch (PersistenceException e) {
 			// Assert dentro del catch
 			assertFalse(resultado, "Se esperaba que la adición del hotel fallara debido a una excepción de persistencia");
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }
-*/
+

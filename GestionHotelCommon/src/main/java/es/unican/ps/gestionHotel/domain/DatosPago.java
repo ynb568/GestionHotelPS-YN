@@ -21,12 +21,8 @@ public class DatosPago {
 	
 	public DatosPago() {}
 	
-	public DatosPago (String numTarjeta, String cvc, String mesCaducidad, String anhoCaducidad, TipoTarjeta tipo) {
+	public DatosPago (String numTarjeta) {
 		this.numTarjeta = numTarjeta;
-		this.cvc = cvc;
-		this.mesCaducidad = mesCaducidad;
-		this.anhoCaducidad = anhoCaducidad;
-		this.tipo = tipo;
 	}
 
 	public String getNumTarjeta() {

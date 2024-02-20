@@ -7,7 +7,7 @@ id="WebApp_ID" version="5.0">
   <display-name>GestionHotel</display-name>
   
   <welcome-file-list>
-    <welcome-file>consulta.xhtml</welcome-file>
+    <welcome-file>centralDeReservas.xhtml</welcome-file>
   </welcome-file-list>
   
   <servlet>

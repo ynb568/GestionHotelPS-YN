@@ -2,11 +2,13 @@ package es.unican.ps.gestionHotel.businessLayer;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import es.unican.ps.gestionHotel.daoLayer.IHotelesDAO;
 import es.unican.ps.gestionHotel.daoLayer.IReservasDAO;
 import es.unican.ps.gestionHotel.domain.Hotel;
 import es.unican.ps.gestionHotel.domain.Reserva;
+import es.unican.ps.gestionHotel.domain.ReservaTipoHabitacion;
 import es.unican.ps.gestionHotel.domain.TipoHabitacion;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
@@ -30,6 +32,7 @@ public class ConsultaReserva implements IConsultaReserva, IConsultaReservaRemote
 	 * 		si se busca por ambos devuelve null
 	 */
 	public ArrayList<Hotel> consultaDisponibilidad(String nomHotel, String localidad) {
+		System.out.println("nombre" + nomHotel + " localidad" + localidad);
 		ArrayList<Hotel> hotelesSelec = new ArrayList<Hotel>();
 		if (nomHotel != null && localidad == null) {
 			Hotel hotelNombre = hoteles.getHotel(nomHotel);
@@ -48,13 +51,13 @@ public class ConsultaReserva implements IConsultaReserva, IConsultaReservaRemote
 			}
 		} else if (nomHotel == null && localidad == null) {
 			throw new OperacionNoValida("Filtro de búsqueda no insertado");
-		} else {
+		} else if (nomHotel != null && localidad != null) {
 			throw new OperacionNoValida("Únicamente utilizar un filto de busqueda (Nombre de Hotel ó Localidad)");
 		}
 		return hotelesSelec;
 	}
-
-	public ArrayList<TipoHabitacion> consultaDisponibilidadHotel(Hotel h, LocalDate fechaIni, LocalDate fechaFin) {
+	
+	public HashSet<ReservaTipoHabitacion> consultaDisponibilidadHotel(Hotel h, LocalDate fechaIni, LocalDate fechaFin) {
 		ArrayList<TipoHabitacion> habsDisponibles = new ArrayList<TipoHabitacion>();
 		ArrayList<Reserva> reservasHotel = h.getReservas();
 		for (TipoHabitacion th : h.getHabitaciones()) {
@@ -71,7 +74,9 @@ public class ConsultaReserva implements IConsultaReserva, IConsultaReservaRemote
 				habsDisponibles.add(th);
 			}
 		}
-		return habsDisponibles;
+		HashSet<ReservaTipoHabitacion> tiposParaReserva = convertirASetReservaTipo(habsDisponibles);
+		
+		return tiposParaReserva;
 	}
 
 	public Reserva consultaReservaPorId(int idReserva) {
@@ -92,4 +97,20 @@ public class ConsultaReserva implements IConsultaReserva, IConsultaReservaRemote
 		}
 		return null;
 	}
+	
+    public HashSet<ReservaTipoHabitacion> convertirASetReservaTipo(ArrayList<TipoHabitacion> tiposHabitacion) {
+        HashSet<ReservaTipoHabitacion> reservas = new HashSet<>();
+
+        // Número total de tipos
+        int numeroTotalTipos = tiposHabitacion.size();
+
+        // Crear instancias de ReservaTipoHabitacion y agregar al HashSet
+        for (TipoHabitacion tipo : tiposHabitacion) {
+            ReservaTipoHabitacion reserva = new ReservaTipoHabitacion(numeroTotalTipos, tipo);
+            reservas.add(reserva);
+        }
+
+        return reservas;
+    }
+
 }

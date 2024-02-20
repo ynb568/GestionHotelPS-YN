@@ -3,10 +3,11 @@ package es.unican.ps.GestionHotel.web;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import es.unican.ps.gestionHotel.businessLayer.IConsultaReservaRemote;
 import es.unican.ps.gestionHotel.domain.Hotel;
-import es.unican.ps.gestionHotel.domain.TipoHabitacion;
+import es.unican.ps.gestionHotel.domain.ReservaTipoHabitacion;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
@@ -15,23 +16,26 @@ import jakarta.inject.Named;
 @Named
 @SessionScoped
 public class ConsultaReservaBean implements Serializable {
-	
+
 	@EJB
 	private IConsultaReservaRemote consultaReserva;
 
-	private String nomHotel;
-	private String localidad;
+	private String nomHotel = null;
+	private String localidad = null;
 	private ArrayList<Hotel> listaHoteles = new ArrayList<Hotel>();
-	
+
 	private Hotel h;
 	private LocalDate fechaIni;
 	private LocalDate fechaFin;
-	private ArrayList<TipoHabitacion> listaTiposHabs = new ArrayList<TipoHabitacion>();
-	
-	
+	private HashSet<ReservaTipoHabitacion> listaTiposHabs = new HashSet<ReservaTipoHabitacion>();
+
+
 	public ConsultaReservaBean () {}
-	
+
 	public String consultaDisponibilidad() {
+	    System.out.println("localidad: " + localidad);
+	    System.out.println("nomHotel: " + nomHotel);
+		
 		ArrayList<Hotel> hotelesDevueltos = consultaReserva.consultaDisponibilidad(nomHotel, localidad);
 		if (hotelesDevueltos == null) {
 			return null;
@@ -39,19 +43,19 @@ public class ConsultaReservaBean implements Serializable {
 		for (Hotel h : hotelesDevueltos) {
 			listaHoteles.add(h);
 		}
-		return "consulta.xhtml";
-		
+		return "listaDeHoteles.xhtml";
+
 	}
-	
+
 	public String consultaDisponibilidadHotel() {
-		ArrayList<TipoHabitacion> tipoHabsDevueltas = consultaReserva.consultaDisponibilidadHotel(h, fechaIni, fechaFin);
+		HashSet<ReservaTipoHabitacion> tipoHabsDevueltas = consultaReserva.consultaDisponibilidadHotel(h, fechaIni, fechaFin);
 		if (tipoHabsDevueltas == null) {
 			return null;
 		}
-		for (TipoHabitacion th : tipoHabsDevueltas) {
+		for (ReservaTipoHabitacion th : tipoHabsDevueltas) {
 			listaTiposHabs.add(th);
 		}
-		return "consulta.xhtml";
+		return "disponibilidadDeHabitaciones.xhtml";
 	}
 	
 	public IConsultaReservaRemote getConsultaReserva() {
@@ -110,11 +114,11 @@ public class ConsultaReservaBean implements Serializable {
 		this.fechaFin = fechaFin;
 	}
 
-	public ArrayList<TipoHabitacion> getListaTiposHabs() {
+	public HashSet<ReservaTipoHabitacion> getListaTiposHabs() {
 		return listaTiposHabs;
 	}
 
-	public void setListaTiposHabs(ArrayList<TipoHabitacion> listaTiposHabs) {
+	public void setListaTiposHabs(HashSet<ReservaTipoHabitacion> listaTiposHabs) {
 		this.listaTiposHabs = listaTiposHabs;
 	}
 
